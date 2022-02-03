@@ -61,7 +61,10 @@ class MainActivity : AppCompatActivity() {
             Snackbar.make(clRoot, "Invalid move!", Snackbar.LENGTH_LONG).show()
             return
         }
-        memoryGame.flipCard(position)
+        // Actually flip over the card
+        if (memoryGame.flipCard(position)) {
+            Log.i(TAG, "Found a match! Num pairs found: ${memoryGame.numPairsFound}")
+        }
         adapter.notifyDataSetChanged()
     }
 }
