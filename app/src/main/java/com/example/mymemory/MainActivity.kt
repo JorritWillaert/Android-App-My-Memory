@@ -17,6 +17,8 @@ class MainActivity : AppCompatActivity() {
         private const val TAG = "MainActivity"
     }
 
+    private lateinit var adapter: MemoryBoardAdapter
+    private lateinit var memoryGame: MemoryGame
     private lateinit var rvBoard: RecyclerView
     private lateinit var tvNumMoves: TextView
     private lateinit var tvNumPairs: TextView
@@ -31,14 +33,20 @@ class MainActivity : AppCompatActivity() {
         tvNumMoves = findViewById(R.id.tvNumMoves)
         tvNumPairs = findViewById(R.id.tvNumPairs)
 
-        val memoryGame = MemoryGame(boardSize)
-        rvBoard.adapter = MemoryBoardAdapter(this, boardSize, memoryGame.cards, object: MemoryBoardAdapter.CardClickListener {
+        memoryGame = MemoryGame(boardSize)
+        adapter = MemoryBoardAdapter(this, boardSize, memoryGame.cards, object: MemoryBoardAdapter.CardClickListener {
             override fun onCardClicked(position: Int) {
-                Log.i(TAG, "Card clicked $position")
+                updateGameWithFlip(position)
             }
 
         })
+        rvBoard.adapter = adapter
         rvBoard.setHasFixedSize(true) // Small optimization
         rvBoard.layoutManager = GridLayoutManager(this, boardSize.getWidth())
+    }
+
+    private fun updateGameWithFlip(position: Int) {
+        memoryGame.flipCard(position)
+        adapter.notifyItemChanged(position)
     }
 }

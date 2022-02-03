@@ -13,4 +13,8 @@ class MemoryGame(private val boardSize: BoardSize) {
         cards = randomizeImages.map { MemoryCard(it) }
     }
 
+    fun flipCard(position: Int) {
+        val card = cards[position]
+        card.isFaceUp = !card.isFaceUp
+    }
 }
