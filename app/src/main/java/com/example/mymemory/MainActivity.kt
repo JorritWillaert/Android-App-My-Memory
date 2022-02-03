@@ -2,6 +2,7 @@ package com.example.mymemory
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.TextView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -11,6 +12,10 @@ import com.example.mymemory.models.MemoryGame
 import com.example.mymemory.utils.DEFAULT_ICONS
 
 class MainActivity : AppCompatActivity() {
+
+    companion object {
+        private const val TAG = "MainActivity"
+    }
 
     private lateinit var rvBoard: RecyclerView
     private lateinit var tvNumMoves: TextView
@@ -27,7 +32,12 @@ class MainActivity : AppCompatActivity() {
         tvNumPairs = findViewById(R.id.tvNumPairs)
 
         val memoryGame = MemoryGame(boardSize)
-        rvBoard.adapter = MemoryBoardAdapter(this, boardSize, memoryGame.cards)
+        rvBoard.adapter = MemoryBoardAdapter(this, boardSize, memoryGame.cards, object: MemoryBoardAdapter.CardClickListener {
+            override fun onCardClicked(position: Int) {
+                Log.i(TAG, "Card clicked $position")
+            }
+
+        })
         rvBoard.setHasFixedSize(true) // Small optimization
         rvBoard.layoutManager = GridLayoutManager(this, boardSize.getWidth())
     }
