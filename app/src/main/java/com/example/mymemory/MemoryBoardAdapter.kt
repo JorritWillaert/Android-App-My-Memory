@@ -9,14 +9,19 @@ import androidx.recyclerview.widget.RecyclerView
 class MemoryBoardAdapter(private val context: Context, private val numPieces: Int) :
    RecyclerView.Adapter<MemoryBoardAdapter.ViewHolder>() {
 
-   inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
+   inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+       fun bind(position: Int) {
+            //No op
+       }
+   }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        LayoutInflater.from(context).inflate(R.layout.memory_card, parent, false)
+        val view = LayoutInflater.from(context).inflate(R.layout.memory_card, parent, false)
+        return ViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        TODO("Not yet implemented")
+        holder.bind(position)
     }
 
     override fun getItemCount(): Int  = numPieces
