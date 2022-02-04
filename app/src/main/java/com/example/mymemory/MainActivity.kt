@@ -6,7 +6,9 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
@@ -67,10 +69,26 @@ class MainActivity : AppCompatActivity() {
         when (item.itemId) {
             R.id.mi_refresh -> {
                 // Setup game again
-                setUpBoard()
+                if (memoryGame.getNumMoves() > 0 && !memoryGame.haveWonGame()) {
+                    showAlertDialog("Quit your current game?", null, View.OnClickListener {
+                        setUpBoard()
+                    })
+                } else {
+                    setUpBoard()
+                }
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun showAlertDialog(title: String, view: View?, positiveClickListener: View.OnClickListener) {
+        AlertDialog.Builder(this)
+            .setTitle(title)
+            .setView(view)
+            .setNegativeButton("Cancel", null)
+            .setPositiveButton("OK") {
+                _, _ -> positiveClickListener.onClick(null)
+            }.show()
     }
 
     private fun updateGameWithFlip(position: Int) {
