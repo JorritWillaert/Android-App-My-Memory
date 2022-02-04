@@ -21,6 +21,7 @@ import com.example.mymemory.models.BoardSize
 import com.example.mymemory.models.MemoryCard
 import com.example.mymemory.models.MemoryGame
 import com.example.mymemory.utils.DEFAULT_ICONS
+import com.example.mymemory.utils.EXTRA_BOARD_SIZE
 import com.google.android.material.snackbar.Snackbar
 
 class MainActivity : AppCompatActivity() {
@@ -121,6 +122,7 @@ class MainActivity : AppCompatActivity() {
             }
             // Navigate to a new activity
             val intent = Intent(this, CreateActivity::class.java)
+            intent.putExtra(EXTRA_BOARD_SIZE, desiredBoardSize)
             startActivityForResult(intent, CREATE_REQUEST_CODE)
         })
     }
