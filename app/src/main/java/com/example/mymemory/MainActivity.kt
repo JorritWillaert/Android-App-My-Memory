@@ -50,6 +50,11 @@ class MainActivity : AppCompatActivity() {
         tvNumPairs = findViewById(R.id.tvNumPairs)
         tvNumPairs.setTextColor(ContextCompat.getColor(this, R.color.color_progress_none))
 
+        // Just for developing
+        val intent = Intent(this, CreateActivity::class.java)
+        intent.putExtra(EXTRA_BOARD_SIZE, BoardSize.MEDIUM)
+        startActivity(intent)
+
         setUpBoard()
     }
 
