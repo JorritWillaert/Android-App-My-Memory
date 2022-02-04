@@ -1,10 +1,12 @@
 package com.example.mymemory
 
+import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.widget.Button
 import android.widget.EditText
@@ -19,6 +21,7 @@ import com.example.mymemory.utils.requestPermission
 class CreateActivity : AppCompatActivity() {
 
     companion object {
+        private const val TAG = "CreateActivity"
         private const val PICk_PHOTO_CODE = 655 // Random number
         private const val READ_EXTERNAL_PHOTOS_CODE = 248 // Random number
         private const val READ_PHOTOS_PERMISSION = android.Manifest.permission.READ_EXTERNAL_STORAGE
@@ -81,6 +84,28 @@ class CreateActivity : AppCompatActivity() {
             return true
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode != PICk_PHOTO_CODE || resultCode != Activity.RESULT_OK || data == null) {
+            Log.w(TAG, "Did not get data back from the launched activity, user likely cancelled flow")
+            return
+        }
+        val selectedUri = data.data
+        val clipData = data.clipData
+        if (clipData != null) {
+            Log.i(TAG, "clipData numImages ${clipData.itemCount}: $clipData")
+            for (i in 0 until clipData.itemCount) {
+                val clipItem = clipData.getItemAt(i)
+                if (chosenImageUris.size < numImagesRequired) {
+                    chosenImageUris.add(clipItem.uri)
+                }
+            }
+        } else if (selectedUri != null) {
+            Log.i(TAG, "data: $selectedUri")
+            chosenImageUris.add(selectedUri)
+        }
     }
 
     private fun launchIntentForPhotos() {
