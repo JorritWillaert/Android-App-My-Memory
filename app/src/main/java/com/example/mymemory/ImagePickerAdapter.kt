@@ -11,11 +11,23 @@ import com.example.mymemory.models.BoardSize
 import kotlin.math.min
 
 class ImagePickerAdapter(private val context: Context,
-                         private val chosenImageUris: List<Uri>,
+                         private val imageUris: List<Uri>,
                          private val boardSize: BoardSize
 ) : RecyclerView.Adapter<ImagePickerAdapter.ViewHolder>() {
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        private val ivCustomImage = itemView.findViewById<ImageView>(R.id.ivCustomImage)
+
+        fun bind() {
+            ivCustomImage.setOnClickListener {
+                // Launch intent for user to select photos
+            }
+        }
+
+        fun bind(uri: Uri) {
+            ivCustomImage.setImageURI(uri)
+            ivCustomImage.setOnClickListener(null)
+        }
 
     }
 
@@ -31,7 +43,11 @@ class ImagePickerAdapter(private val context: Context,
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        TODO("Not yet implemented")
+        if (position < imageUris.size) {
+            holder.bind(imageUris[position])
+        } else {
+            holder.bind()
+        }
     }
 
     override fun getItemCount() = boardSize.getNumPairs()
