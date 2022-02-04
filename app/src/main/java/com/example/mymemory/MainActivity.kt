@@ -4,6 +4,8 @@ import android.animation.ArgbEvaluator
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
@@ -40,6 +42,10 @@ class MainActivity : AppCompatActivity() {
         tvNumPairs = findViewById(R.id.tvNumPairs)
         tvNumPairs.setTextColor(ContextCompat.getColor(this, R.color.color_progress_none))
 
+        setUpBoard()
+    }
+
+    private fun setUpBoard() {
         memoryGame = MemoryGame(boardSize)
         adapter = MemoryBoardAdapter(this, boardSize, memoryGame.cards, object: MemoryBoardAdapter.CardClickListener {
             override fun onCardClicked(position: Int) {
@@ -50,6 +56,21 @@ class MainActivity : AppCompatActivity() {
         rvBoard.adapter = adapter
         rvBoard.setHasFixedSize(true) // Small optimization
         rvBoard.layoutManager = GridLayoutManager(this, boardSize.getWidth())
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_main, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.mi_refresh -> {
+                // Setup game again
+                setUpBoard()
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     private fun updateGameWithFlip(position: Int) {
