@@ -187,8 +187,15 @@ class CreateActivity : AppCompatActivity() {
                     val downloadUrl = downloadUrlTask.result.toString()
                     uploadedImageUrls.add(downloadUrl)
                     Log.i(TAG, "Finished uploading $photoUri, num uploaded ${uploadedImageUrls.size}")
+                    if (uploadedImageUrls.size == chosenImageUris.size) {
+                        handleAllImageUploaded(customGameName, uploadedImageUrls)
+                    }
                 }
         }
+    }
+
+    private fun handleAllImageUploaded(gameName: String, imageUrls: MutableList<String>) {
+        // TODO: Upload to Firestore
     }
 
     private fun getImageByteArray(photoUri: Uri): ByteArray {
