@@ -1,6 +1,7 @@
 package com.example.mymemory
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -22,10 +23,7 @@ import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mymemory.models.BoardSize
-import com.example.mymemory.utils.BitmapScaler
-import com.example.mymemory.utils.EXTRA_BOARD_SIZE
-import com.example.mymemory.utils.isPermissionGranted
-import com.example.mymemory.utils.requestPermission
+import com.example.mymemory.utils.*
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
@@ -195,7 +193,24 @@ class CreateActivity : AppCompatActivity() {
     }
 
     private fun handleAllImageUploaded(gameName: String, imageUrls: MutableList<String>) {
-        // TODO: Upload to Firestore
+        db.collection("games").document(gameName)
+            .set(mapOf("images" to imageUrls))
+            .addOnCompleteListener { gameCreationTask ->
+                if (!gameCreationTask.isSuccessful) {
+                    Log.e(TAG, "Exception with game creation", gameCreationTask.exception)
+                    Toast.makeText(this, "Failed game creation", Toast.LENGTH_SHORT).show()
+                    return@addOnCompleteListener
+                }
+                Log.i(TAG, "Succesfully created game $gameName")
+                AlertDialog.Builder(this)
+                    .setTitle("Upload completed! Let's play your game '$gameName'")
+                    .setPositiveButton("OK") { _, _ ->
+                        val resultData = Intent()
+                        resultData.putExtra(EXTRA_GAME_NAME, gameName)
+                        setResult(Activity.RESULT_OK, resultData)
+                        finish()
+                    }.show()
+            }
     }
 
     private fun getImageByteArray(photoUri: Uri): ByteArray {
