@@ -5,6 +5,12 @@ enum class BoardSize(val numCards: Int) {
     MEDIUM (numCards = 18),
     HARD(numCards = 24);
 
+    companion object {
+        fun getByValue(value: Int): BoardSize {
+            return values().first{it.numCards == value}
+        }
+    }
+
     fun getWidth() : Int {
         return when (this) {
             EASY -> 2
