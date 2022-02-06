@@ -30,6 +30,7 @@ class CreateActivity : AppCompatActivity() {
     private lateinit var rvImagePicker: RecyclerView
     private lateinit var etGameName: EditText
     private lateinit var btnSave: Button
+    private lateinit var adapter: ImagePickerAdapter
 
     private lateinit var boardSize : BoardSize
     private var numImagesRequired = -1
@@ -48,7 +49,7 @@ class CreateActivity : AppCompatActivity() {
         numImagesRequired = boardSize.getNumPairs()
         supportActionBar?.title = "Choose pics (0 / $numImagesRequired)"
 
-        rvImagePicker.adapter = ImagePickerAdapter(this, chosenImageUris, boardSize, object: ImagePickerAdapter.ImageClickListerer {
+        adapter = ImagePickerAdapter(this, chosenImageUris, boardSize, object: ImagePickerAdapter.ImageClickListerer {
             override fun onPlaceholderClicked() {
                 if (isPermissionGranted(this@CreateActivity, READ_PHOTOS_PERMISSION)) {
                     launchIntentForPhotos()
@@ -59,6 +60,7 @@ class CreateActivity : AppCompatActivity() {
             }
 
         })
+        rvImagePicker.adapter = adapter
         rvImagePicker.setHasFixedSize(true)
         rvImagePicker.layoutManager = GridLayoutManager(this, boardSize.getWidth())
     }
@@ -106,6 +108,8 @@ class CreateActivity : AppCompatActivity() {
             Log.i(TAG, "data: $selectedUri")
             chosenImageUris.add(selectedUri)
         }
+        adapter.notifyDataSetChanged()
+        supportActionBar?.title = "Choose pictures (${chosenImageUris.size} / $numImagesRequired)"
     }
 
     private fun launchIntentForPhotos() {
