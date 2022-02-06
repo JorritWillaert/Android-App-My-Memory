@@ -2,7 +2,7 @@ package com.example.mymemory.models
 
 import com.example.mymemory.utils.DEFAULT_ICONS
 
-class MemoryGame(private val boardSize: BoardSize) {
+class MemoryGame(private val boardSize: BoardSize, customImages: List<String>?) {
 
     val cards: List<MemoryCard>
     var numPairsFound = 0
@@ -10,9 +10,14 @@ class MemoryGame(private val boardSize: BoardSize) {
     private var numCardFlips = 0
 
     init {
-        val chosenImages = DEFAULT_ICONS.shuffled().take(boardSize.getNumPairs())
-        val randomizeImages = (chosenImages + chosenImages).shuffled()
-        cards = randomizeImages.map { MemoryCard(it) }
+        if (customImages == null) {
+            val chosenImages = DEFAULT_ICONS.shuffled().take(boardSize.getNumPairs())
+            val randomizeImages = (chosenImages + chosenImages).shuffled()
+            cards = randomizeImages.map { MemoryCard(it) }
+        } else {
+            val randomizedImages = (customImages + customImages).shuffled()
+            cards = randomizedImages.map { MemoryCard(it.hashCode(), it) }
+        }
     }
 
     fun flipCard(position: Int) : Boolean {

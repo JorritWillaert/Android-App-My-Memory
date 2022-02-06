@@ -5,7 +5,6 @@ import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.telephony.RadioAccessSpecifier
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
@@ -19,10 +18,8 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mymemory.models.BoardSize
-import com.example.mymemory.models.MemoryCard
 import com.example.mymemory.models.MemoryGame
 import com.example.mymemory.models.UserImageList
-import com.example.mymemory.utils.DEFAULT_ICONS
 import com.example.mymemory.utils.EXTRA_BOARD_SIZE
 import com.example.mymemory.utils.EXTRA_GAME_NAME
 import com.google.android.material.snackbar.Snackbar
@@ -76,7 +73,7 @@ class MainActivity : AppCompatActivity() {
                 tvNumPairs.text = "Pairs: 0 / 12"
             }
         }
-        memoryGame = MemoryGame(boardSize)
+        memoryGame = MemoryGame(boardSize, customGameImages)
         adapter = MemoryBoardAdapter(this, boardSize, memoryGame.cards, object: MemoryBoardAdapter.CardClickListener {
             override fun onCardClicked(position: Int) {
                 updateGameWithFlip(position)
