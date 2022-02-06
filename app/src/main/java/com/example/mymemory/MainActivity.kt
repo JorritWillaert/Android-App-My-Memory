@@ -151,8 +151,8 @@ class MainActivity : AppCompatActivity() {
                     Picasso.get().load(imageUrl).fetch()
                 }
                 Snackbar.make(clRoot, "You're now playing '$customGameName'!", Snackbar.LENGTH_LONG).show()
-                setUpBoard()
                 gameName = customGameName
+                setUpBoard()
         }.addOnFailureListener { exception ->
             Log.e(TAG, "Exception while downloading game", exception)
         }
