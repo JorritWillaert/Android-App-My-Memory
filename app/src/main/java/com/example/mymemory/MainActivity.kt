@@ -59,6 +59,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setUpBoard() {
+        supportActionBar?.title = gameName ?: getString(R.string.app_name)
         when (boardSize) {
             BoardSize.EASY -> {
                 tvNumMoves.text = "Easy: 4 x 2"
@@ -178,6 +179,8 @@ class MainActivity : AppCompatActivity() {
                 R.id.rbMedium -> BoardSize.MEDIUM
                 else -> BoardSize.HARD
             }
+            gameName = null
+            customGameImages = null
             setUpBoard()
         })
     }
