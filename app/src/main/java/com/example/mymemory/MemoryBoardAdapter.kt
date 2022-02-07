@@ -44,7 +44,7 @@ class MemoryBoardAdapter(
                    imageButton.setImageResource(memoryCard.identifier)
                }
            } else {
-               imageButton.setImageResource(R.drawable.ic_launcher_background)
+               imageButton.setImageResource(R.drawable.wood)
            }
 
            imageButton.alpha = if (memoryCard.isMatched) 0.4f else 1.0f
