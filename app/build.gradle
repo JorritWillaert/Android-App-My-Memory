@@ -49,6 +49,7 @@ dependencies {
     implementation "androidx.core:core-ktx:+"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'com.squareup.picasso:picasso:2.71828'
+    implementation 'com.github.jinatonic.confetti:confetti:1.1.2'
 }
 repositories {
     mavenCentral()
